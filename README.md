@@ -1,126 +1,106 @@
-# NextAcademy - Modular Frontend Learning Application
+# DummyHub Next.js Learning Application
 
-A clean, modular 3-page web application built with Next.js 15 (App Router) and React 19, connected directly to public REST API endpoints from DummyJSON.
+A clean, modular 3-page learning application built with Next.js (App Router), React Context API, and modern CSS consuming public APIs from DummyJSON.
 
----
+## Description
 
-## Architecture and Learning Goals
+DummyHub is a production-structured Next.js frontend web application designed to demonstrate core React and Next.js engineering principles. It features client-side and server-side asynchronous data fetching, centralized global state management via `AuthContext`, modular reusable components (`Header`, `Footer`, `ProductCard`, `HeroSection`), and clean API abstraction in `src/lib/api.js`. The application integrates with public endpoints from DummyJSON to provide a multi-page experience including an asynchronous Login flow with token persistence, a real-time Products catalog with interactive cards, and a comprehensive user profile view, all seamlessly wrapped inside a responsive root layout.
 
-### 1. Modular Components
-- **Header** (`src/components/Header.jsx`): Top navigation bar with active route highlighting, user authentication status badge, and sign-out handler.
-- **Footer** (`src/components/Footer.jsx`): Application footer displaying architecture concepts, navigation links, and external API documentation references.
-- **HeroSection** (`src/components/HeroSection.jsx`): Reusable showcase banner receiving title, highlight text, description, call-to-action buttons, and statistics via props.
-- **ProductCard** (`src/components/ProductCard.jsx`): Reusable child component rendering product properties such as thumbnail image, title, rating, category badge, discount percentage, pricing, and an interactive Add-to-Cart button.
-- **UserCard** (`src/components/UserCard.jsx`): Reusable child component displaying user profile details including avatar, full name, username, email, phone number, company, and location.
-- **Wrapper** (`src/components/Wrapper.jsx`): Generic layout container demonstrating the React composition pattern using the `children` prop with configurable max-width sizes (`sm`, `md`, `lg`, `full`).
-- **StatusBanner** (`src/components/StatusBanner.jsx`): Reusable state banner handling loading indicators, error notices with retry actions, and empty search results.
+## Getting Started
 
-### 2. Parent-Child Data Flow and Props
-- **Top-Down Data Flow (Parent to Child)**:
-  Parent pages (`products/page.js` and `profile/page.js`) perform API requests and pass clean JavaScript data objects down to child components via props:
-  ```jsx
-  <ProductCard
-    key={product.id}
-    product={product}
-    onAddToCart={handleAddToCart}
-  />
+### Dependencies
+
+* Operating System: Windows 10/11, macOS, or Linux
+* Runtime: Node.js (v18.17.0 or higher recommended, tested on v24.x)
+* Package Manager: npm (v9.0.0 or higher) or yarn / pnpm
+* Core Packages:
+  * `next` (^14.x or ^15.x) - React Framework with App Router
+  * `react` (^18.x or ^19.x) - Frontend library
+  * `react-dom` - React DOM rendering engine
+  * `lucide-react` (optional) - Modern UI icons
+
+### Installing
+
+* Clone or navigate to the project directory:
+  ```bash
+  cd "e:\Starter Kit\nextjs_starter_kit"
   ```
-- **Bottom-Up Communication (Child to Parent)**:
-  When a user clicks the Add-to-Cart button inside `ProductCard.jsx`, the child component invokes the parent-supplied `onAddToCart(product)` callback prop. The parent page updates its cart counter state and displays an action banner accordingly.
+* Install all required project dependencies:
+  ```bash
+  npm install
+  ```
+* Environment Configuration:
+  * Create or verify `.env.local` in the project root:
+    ```env
+    NEXT_PUBLIC_DUMMYJSON_URL=https://dummyjson.com
+    ```
 
-### 3. Asynchronous Operations
-- Centralized service layer located in `src/lib/api.js`.
-- Clean implementation of `async/await` syntax inside `useEffect` hooks with `try/catch/finally` blocks to prevent blocking or freezing the user interface.
-- Explicit UI state handling for loading status (`isLoading`), error states (`errorMessage`), and successful data payloads.
+### Executing program
 
-### 4. Pages and Views
-- **Page 1: Authentication / Login** (`src/app/login/page.js`):
-  - Direct integration with `POST https://dummyjson.com/auth/login`.
-  - Validates credentials asynchronously and persists user information and token in `AuthContext` and `localStorage`.
-  - Automatically redirects to the Products Dashboard upon successful login.
-  - Includes quick demo buttons for testing with preset credentials.
-- **Page 2: Products Dashboard** (`src/app/products/page.js`):
-  - Direct integration with `GET https://dummyjson.com/products`.
-  - Live keyword search input with 300ms debounce.
-  - Dynamic category filter dropdown using categories fetched from the API.
-  - Renders each product using the reusable `ProductCard` child component.
-- **Page 3: User Profiles and Directory** (`src/app/profile/page.js`):
-  - Direct integration with `GET https://dummyjson.com/users`.
-  - Displays authenticated user profile if signed in.
-  - Interactive directory listing: selecting any `UserCard` child component updates the detailed user inspector panel.
+* Running the Next.js Development Server:
+  ```bash
+  npm run dev
+  ```
+* Building for Production:
+  ```bash
+  npm run build
+  ```
+* Starting the Production Server:
+  ```bash
+  npm start
+  ```
+* Accessing the Application:
+  * Open your web browser and navigate to:
+    ```text
+    http://localhost:3000
+    ```
+* Available Application Routes:
+  * `/` — Home / Landing page
+  * `/login` — Login portal calling `POST https://dummyjson.com/auth/login`
+  * `/products` — Products catalog calling `GET https://dummyjson.com/products`
+  * `/profile` — User profile details view calling `GET https://dummyjson.com/users`
+* Testing Authentication:
+  * Use predefined DummyJSON test credentials on the `/login` page:
+    * Username: `emilys`
+    * Password: `emilyspass`
+    * Alternative: `michaelw` / `michaelwpass`
 
----
+## Help
 
-## Project Structure
+* Port 3000 already in use:
+  * If port 3000 is occupied, Next.js will automatically suggest another port (e.g., `http://localhost:3001`), or specify a custom port manually:
+    ```bash
+    npm run dev -- -p 3005
+    ```
+* Node Version Compatibility:
+  * Check your installed version using `node -v`. Next.js requires Node.js v18.17 or higher.
+* Invalid Credentials on Login:
+  * DummyJSON only accepts registered test accounts. Ensure you use valid credentials such as `emilys` / `emilyspass`.
+* Hydration Errors:
+  * Ensure browser-only properties like `localStorage` or `window` are accessed inside `useEffect` or client components marked with `'use client'`.
 
-```text
-nextjs_starter_kit/
-├── .gitignore
-├── next.config.mjs
-├── package.json
-├── README.md
-└── src/
-    ├── app/
-    │   ├── globals.css
-    │   ├── layout.js
-    │   ├── page.js
-    │   ├── login/
-    │   │   └── page.js
-    │   ├── products/
-    │   │   └── page.js
-    │   └── profile/
-    │       └── page.js
-    ├── components/
-    │   ├── Footer.jsx
-    │   ├── Header.jsx
-    │   ├── HeroSection.jsx
-    │   ├── ProductCard.jsx
-    │   ├── StatusBanner.jsx
-    │   ├── UserCard.jsx
-    │   └── Wrapper.jsx
-    ├── context/
-    │   └── AuthContext.jsx
-    └── lib/
-        └── api.js
-```
+## Authors
 
----
+* Development Team
+* Project Contributor: [@Developer](https://github.com/)
 
-## Installation and Setup
+## Version History
 
-### 1. Install Dependencies
-```bash
-npm install
-```
+* 0.2
+  * Added global `AuthContext` for user session management
+  * Integrated API service layer in `src/lib/api.js` for DummyJSON communication
+  * Implemented responsive ProductCard grid and filter controls
+  * Refactored into Next.js App Router (`src/app`) modular architecture
+* 0.1
+  * Initial project setup with Next.js boilerplate and baseline routing
 
-### 2. Start Development Server
-```bash
-npm run dev
-```
+## License
 
-### 3. Build for Production
-```bash
-npm run build
-```
+This project is licensed under the ISC License - see the LICENSE file for details.
 
----
+## Acknowledgments
 
-## Test Credentials (DummyJSON)
-
-The following public test credentials from DummyJSON can be used to authenticate on the login page:
-
-- **Username**: `emilys`
-- **Password**: `emilyspassword`
-
-Alternative account:
-- **Username**: `kminchelle`
-- **Password**: `0lelkeyw`
-
----
-
-## External API Endpoints Used
-
-- **Login API**: `POST https://dummyjson.com/auth/login`
-- **Products API**: `GET https://dummyjson.com/products`
-- **Product Categories API**: `GET https://dummyjson.com/products/categories`
-- **Users API**: `GET https://dummyjson.com/users`
+* [DummyJSON](https://dummyjson.com) - Public REST API for realistic mock data and authentication services
+* [Next.js Documentation](https://nextjs.org/docs) - App Router and React Server Components documentation
+* [PurpleBooth / README-Template](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2) - Standard project documentation structure inspiration
+* [awesome-readme](https://github.com/matiassingers/awesome-readme) - Documentation best practices
