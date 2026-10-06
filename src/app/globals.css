@@ -150,6 +150,7 @@ input, select, textarea {
   letter-spacing: -0.02em;
   background: linear-gradient(to right, #fff, #cbd5e1);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -342,6 +343,7 @@ input, select, textarea {
 .gradient-text {
   background: linear-gradient(135deg, #a5b4fc 0%, #818cf8 40%, #06b6d4 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -571,6 +573,7 @@ input, select, textarea {
   line-height: 1.35;
   display: -webkit-box;
   -webkit-line-clamp: 1;
+  line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -582,6 +585,7 @@ input, select, textarea {
   margin-bottom: 1.25rem;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   flex: 1;
